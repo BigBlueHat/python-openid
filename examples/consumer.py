@@ -203,12 +203,15 @@ class OpenIDRequestHandler(BaseHTTPRequestHandler):
                     self.writeUserHeader()
                     self.end_headers()
                 else:
+                    self.send_response(200)
+                    self.send_header('Content-Type', 'text/html')
                     form_html = request.htmlMarkup(
                         trust_root, return_to,
                         form_tag_attrs={'id':'openid_message'},
                         immediate=immediate)
 
                     self.wfile.write(form_html)
+                    self.wfile.close()
 
     def requestRegistrationData(self, request):
         sreg_request = sreg.SRegRequest(
